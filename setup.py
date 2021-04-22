@@ -23,7 +23,7 @@ setup_args = {
     'name': 'hahaha_utils',
     'author': 'Danny',
     'author_email': 'mrdanny1024@gmail.com',
-    'version': "1.0.3",
+    'version': "1.0.4",
     'license': 'MIT',
     'description': 'HAHAHA Python3 Utils',
     'long_description': 'HAHAHA Python3 Utils',
@@ -79,7 +79,7 @@ setup_args = {
         'wheel',
         'paramiko',
         'camelot',
-        'kafka5',
+        'kafka',
         'Pillow',
         'pip',
         'pycryptodome'
