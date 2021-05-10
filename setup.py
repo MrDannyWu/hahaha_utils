@@ -23,7 +23,7 @@ setup_args = {
     'name': 'hahaha_utils',
     'author': 'Danny',
     'author_email': 'mrdanny1024@gmail.com',
-    'version': "1.0.4",
+    'version': "1.0.5",
     'license': 'MIT',
     'description': 'HAHAHA Python3 Utils',
     'long_description': 'HAHAHA Python3 Utils',
@@ -82,7 +82,8 @@ setup_args = {
         'kafka',
         'Pillow',
         'pip',
-        'pycryptodome'
+        'pycryptodome',
+        'elasticsearch'
     ],
     'zip_safe': False
 }
