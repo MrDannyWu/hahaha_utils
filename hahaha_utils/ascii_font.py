@@ -11,5 +11,5 @@ def print_ascii_tetx(font_text):
        cprint(figlet_format(font_text, font='starwars'), 'green', 'on_red', attrs=['bold'])
 
 if __name__ == '__main__':
-       font_text = 'abcdefghijklmnopqrst'
+       font_text = 'abcd'
        print_ascii_tetx(font_text)
