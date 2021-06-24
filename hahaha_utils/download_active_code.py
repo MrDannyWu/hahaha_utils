@@ -17,7 +17,7 @@ from time import sleep
 
 
 def download_jetbrains_active_code(zip_file_name):
-    d_url = 'http://idea.medeming.com/jihuoma/images/jihuoma.zip'
+    d_url = 'http://idea.medeming.com/a/jihuoma2.zip'
     try:
         resp = get(d_url)
         with open(zip_file_name, 'wb')as f:
@@ -33,7 +33,7 @@ def read_zip_file(zip_file):
         z = ZipFile(zip_file, 'r')
         # 打印zip文件中的文件列表
         for file_name in z.namelist():
-            if '2018' in file_name:
+            if '2018.2' in file_name:
                 content = z.read(file_name).decode()
                 active_code_text = ''
                 print('您的jetbrains激活码为: ')
