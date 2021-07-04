@@ -23,9 +23,10 @@ files = {
 }
 producer = KafkaProducer(
     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-    bootstrap_servers='localhost:9092'
+    bootstrap_servers='127.0.0.1:9092'
 )
-for i in range(300000):
+for i in range(3):
     print('i: ', files)
     producer.send('test', files)
+
 producer.close()

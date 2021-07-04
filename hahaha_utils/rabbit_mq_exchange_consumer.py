@@ -15,13 +15,13 @@ import pika
 import sys
 import json
 
-hostname = '192.168.15.75'
+hostname = '127.0.0.1'
 port = 5672
 username = 'guest'
 password = 'root'
-exchange = 'lepin.etl.topic'
-queue = 't_rc_order_xx_yy_db_t_rc_order_z'
-queue1 = 'rc_manual_xx_yy_db_t_rc_order_manual_z'
+exchange = 'etl.topic'
+queue = 'test'
+queue1 = 'test1'
 
 credentials = pika.PlainCredentials(username=username, password=password)
 parameters = pika.ConnectionParameters(host=hostname,port=port,credentials=credentials)
@@ -74,7 +74,6 @@ def callback(ch, method, properties, body):
 
 
 
-# channel.basic_consume(on_message_callback=callback, queue='rc_manual_xx_yy_db_t_rc_order_manual_z', auto_ack=True)
 channel.basic_consume(on_message_callback=callback, queue=queue, auto_ack=True)
 channel.basic_consume(on_message_callback=callback, queue=queue1, auto_ack=True)
 channel.start_consuming()

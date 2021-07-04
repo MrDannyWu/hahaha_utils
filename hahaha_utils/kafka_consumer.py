@@ -16,8 +16,8 @@ import json
 from kafka import KafkaConsumer
 
 KAFKA_TOPIC = 'Dhg'
-KAFKA_BROKERS = 'localhost:9092'
-topic = 'test_topic'
+KAFKA_BROKERS = '127.0.0.1:9092'
+topic = 'test'
 consumer = KafkaConsumer(bootstrap_servers=KAFKA_BROKERS, auto_offset_reset='earliest')
 consumer.subscribe([KAFKA_TOPIC, topic])
 try:
@@ -26,12 +26,12 @@ try:
         data = json.loads(message.value.decode())
         print(data)
         try:
-            for i in json.loads(data['field_1']):
+            for i in json.loads(data['name']):
                 print(i)
         except:
             pass
         try:
-            for j in json.loads(data['field_2']):
+            for j in json.loads(data['data']):
                 print(j)
         except:
             pass

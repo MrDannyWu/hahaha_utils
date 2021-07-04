@@ -14,7 +14,7 @@
 
 import pika
 
-hostname = '192.168.15.75'
+hostname = '127.0.0.1'
 port = 5672
 username = 'guest'
 password = 'root'

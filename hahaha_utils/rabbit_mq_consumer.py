@@ -11,7 +11,7 @@
 -------------------------------------------------
 """
 import pika
-queue = 't_strategy_decision_record_xx_db_t_rc_decision_record_y'
+queue = 'test'
 credentials = pika.PlainCredentials('guest', 'root')
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost', port=5672, credentials=credentials))

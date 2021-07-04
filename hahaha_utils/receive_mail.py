@@ -78,11 +78,7 @@ def aliyun_mail_to_qy_wechat(imapb, flag):
                 payload = mail_all_content.get_payload()
                 # print(payload)
                 content = payload[0]
-                # print(content)
-                # try:
-                # mail_content = base64.b64decode(str(content).split('base64')[-1].strip()).decode()
-                # if 'Alibaba Cloud Monitor' in str(content):
-                # print(mail_content)
+
                 mail_html = quopri.decodestring(str(content)).decode()
                 print('##############################################################################')
                 # print(mail_html)
@@ -118,10 +114,7 @@ def aliyun_mail_to_qy_wechat(imapb, flag):
         print('目前没有新的邮件!')
         print('###########################################################################################')
         time.sleep(1)
-        # except:
-        #     imapb = imaplib.IMAP4_SSL('imap.exmail.qq.com', port=993)
-        #     imapb.login('danny@kreditme.id', 'Xiaoqiang123')
-        #     print('已经重新登录！')
+
     return flag
 
 

@@ -2,7 +2,7 @@
 """
 -------------------------------------------------
    File:           __init__.py.py
-   Description:   乐品星河Python工具包
+   Description:   Danny Python工具包
    Author:        Danny
    Create Date:    2020/04/10
 -------------------------------------------------

@@ -23,7 +23,7 @@ setup_args = {
     'name': 'hahaha_utils',
     'author': 'Danny',
     'author_email': 'mrdanny1024@gmail.com',
-    'version': "1.0.7",
+    'version': "1.0.8",
     'license': 'MIT',
     'description': 'HAHAHA Python3 Utils',
     'long_description': 'HAHAHA Python3 Utils',
