@@ -23,7 +23,7 @@ setup_args = {
     'name': 'hahaha_utils',
     'author': 'Danny',
     'author_email': 'mrdanny1024@gmail.com',
-    'version': "1.0.9",
+    'version': "1.1.2",
     'license': 'MIT',
     'description': 'HAHAHA Python3 Utils',
     'long_description': 'HAHAHA Python3 Utils',
@@ -38,6 +38,7 @@ setup_args = {
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
@@ -83,7 +84,8 @@ setup_args = {
         'Pillow',
         'pip',
         'pycryptodome',
-        'elasticsearch'
+        'elasticsearch',
+        'canal-python'
     ],
     'zip_safe': False
 }

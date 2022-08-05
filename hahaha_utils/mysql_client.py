@@ -7,31 +7,49 @@
    Create Date:    2020/03/24
 -------------------------------------------------
    Modify:
-                   2020/03/24:a
+                   2020/03/24:
 -------------------------------------------------
 """
-
+import pymysql
 from pymysql import connect as conn
 from hahaha_utils.log_handler import LogHandler
+from sshtunnel import SSHTunnelForwarder
 
 class MySQLClient(object):
-    def __init__(self, db_host, db_user, db_password, db_name, db_port, **kwargs):
+    def __init__(self, db_host, db_user, db_password, db_name, db_port, ssh_host=None, ssh_user=None, ssh_password=None, ssh_port=None, cursorclass=pymysql.cursors.DictCursor, *args, **kwargs):
         """
-        连接数据库方法
+        MySQL工具类
         :param db_host: MySQL数据库所在的主机
         :param db_user: 用户名
-        :param db_pass: 密码
-        :param database: 要连接的数据库
+        :param db_password: 密码
+        :param db_name: 要连接的数据库
         :param db_port: MySQL数据库的端口
-        :return: 连接对象
+        :param ssh_host:
+        :param ssh_user:
+        :param ssh_password:
+        :param ssh_port:
+        :param cursorclass:
+        :param args:
+        :param kwargs:
         """
+
         self.log = LogHandler('db')
-        try:
-            self.__connect = conn(host=db_host, user=db_user, password=db_password, db=db_name, port=db_port)
-            self.__cursor = self.__connect.cursor()
-        except Exception as e:
-            self.log.info('数据库链接失败: ' + str(e))
-        # print(self.connect)
+        if ssh_host is None:
+            try:
+                self.__connect = conn(host=db_host, user=db_user, password=db_password, db=db_name, port=db_port, cursorclass=cursorclass, **kwargs)
+                self.__cursor = self.__connect.cursor()
+            except Exception as e:
+                self.log.info('数据库链接失败: ' + str(e))
+        else:
+            try:
+                self.server = SSHTunnelForwarder((ssh_host, ssh_port), ssh_username=ssh_user, ssh_password=ssh_password,
+                                                 remote_bind_address=(db_host, db_port))
+                self.server.start()
+                self.__connect = pymysql.connect(host='127.0.0.1', port=self.server.local_bind_port, user=db_user,
+                                                 passwd=db_password, db=db_name, charset='utf8')
+                self.__cursor = self.__connect.cursor()
+            except Exception as e:
+                self.log.info('数据库链接失败: ' + str(e))
 
     def get_connect(self):
         # 获取连接
@@ -66,6 +84,7 @@ class MySQLClient(object):
         :return: 受影响的行数
         """
         count = 0
+        self.__connect.ping(reconnect=True)
         try:
             count = self.__cursor.execute(sql, params)
             self.__connect.commit()
@@ -98,6 +117,7 @@ class MySQLClient(object):
         :param values:
         :return:
         """
+        self.__connect.ping(reconnect=True)
         try:
             self.__cursor.executemany(sql, params)
             self.__connect.commit()
@@ -121,6 +141,7 @@ class MySQLClient(object):
         :param sql:
         :return:
         """
+        self.__connect.ping(reconnect=True)
         data_count = -1
         try:
             data_count = self.__cursor.execute(sql, params)
@@ -136,13 +157,20 @@ class MySQLClient(object):
         :return:
         """
         data_list = []
+        data_field_list = []
+        self.__connect.ping(reconnect=True)
         try:
             count = self.__cursor.execute(sql, params)
             if count != 0:
                 data_list = self.__cursor.fetchall()
+                # 获取查询的字段列表
+                for i in self.__cursor.description:
+                    data_field_list.append(i[0])
+            return data_list, data_field_list
         except Exception as e:
             self.log.info('查询失败: ' + str(e))
-        return data_list
+            return None
+
 
     def fetch_one(self, sql, params=None):
         """
@@ -152,6 +180,7 @@ class MySQLClient(object):
         :return:
         """
         data_list = []
+        self.__connect.ping(reconnect=True)
         try:
             count = self.__cursor.execute(sql, params)
             if count != 0:
@@ -191,6 +220,15 @@ class MySQLClient(object):
             table_name_list.append(i[0])
 
         return table_name_list
+
+    def execute_sql(self, sql, params=None):
+        '''
+        执行删除
+        :param sql: sql语句
+        :param params: sql语句对象的参数列表，默认值为None
+        :return: 受影响的行数
+        '''
+        return self.__edit(sql, params)
 
 
 if __name__ == '__main__':

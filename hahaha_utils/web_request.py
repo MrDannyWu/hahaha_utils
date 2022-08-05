@@ -17,12 +17,14 @@ import random
 import time
 from json import dumps
 from hahaha_utils.log_handler import LogHandler
-
+from lxml import etree
+from bs4 import BeautifulSoup
 
 class WebRequest(object):
     def __init__(self, *args, **kwargs):
         # pass
         self.log = LogHandler('web_request')
+        self.response = None
 
     @property
     def user_agent(self):
@@ -72,10 +74,10 @@ class WebRequest(object):
             headers.update(header)
         while True:
             try:
-                html = requests.get(url, headers=headers, timeout=timeout, **kwargs)
-                if any(f in html.content for f in retry_flag):
+                self.response = requests.get(url, headers=headers, timeout=timeout, **kwargs)
+                if any(f in self.response.content for f in retry_flag):
                     raise Exception
-                return html
+                return self.response
             except Exception as e:
                 self.log.info('requests get请求错误: ' + str(e) + ' ' + url)
                 retry_time -= 1
@@ -117,10 +119,10 @@ class WebRequest(object):
         # print(data)
         while True:
             try:
-                html = requests.post(url, headers=headers, data=data, timeout=timeout, **kwargs)
-                if any(f in html.content for f in retry_flag):
+                self.response = requests.post(url, headers=headers, data=data, timeout=timeout, **kwargs)
+                if any(f in self.response.content for f in retry_flag):
                     raise Exception
-                return html
+                return self.response
             except Exception as e:
                 self.log.info('requests post请求错误: ' + str(e) + ' ' + url)
                 retry_time -= 1
@@ -131,5 +133,25 @@ class WebRequest(object):
                     return resp
                 time.sleep(retry_interval)
 
+    def xpath(self):
+        html = etree.HTML(self.response.text)
+
+        return html
+
+    def selector(self):
+        soup = BeautifulSoup(self.response.text, 'lxml')
+
+        return soup
+
+
+
 if __name__ == '__main__':
     pass
+    wr = WebRequest()
+    resp = wr.get('https://www.idannywu.com')
+    print(resp)
+    print(wr.response.status_code)
+    html = wr.xpath()
+    print(html.xpath('//a/@href'))
+    selector = wr.selector()
+    print(selector.select('.os-login-box'))
